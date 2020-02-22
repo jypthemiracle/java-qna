@@ -1,6 +1,6 @@
-package com.codessquad.qna.controller;
+package com.codesquad.qna.controller;
 
-import com.codessquad.qna.User;
+import com.codesquad.qna.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Controller;
