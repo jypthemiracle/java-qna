@@ -1,13 +1,25 @@
 package com.codessquad.qna.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class Question {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long questionId;
+
+  @Column(nullable = false, length = 20)
   private String writer;
   private String title;
   private String contents;
-  private String time;
+  private LocalDateTime localDateTime;
   private int index;
 
   public int getIndex() {
@@ -43,20 +55,16 @@ public class Question {
   }
 
   public String getTime() {
-    return time;
+    return DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS").format(localDateTime);
   }
 
-  public void setTime(String time) {
-    this.time = time;
-  }
-
-  public void setTime() {
-    Date time = new Date();
-    this.time = time.toString();
+  public long getQuestionId() {
+    return getQuestionId();
   }
 
   @Override
   public String toString() {
-    return "Question" + " title " + title + " writer " + writer + " contents " + contents;
+    return "Question" + " title " + " questionId " + questionId + title + " writer " + writer
+        + " contents " + contents + " time " + localDateTime;
   }
 }
