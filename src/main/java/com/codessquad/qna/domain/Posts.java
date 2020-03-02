@@ -1,11 +1,13 @@
 package com.codessquad.qna.domain;
 
+import com.codessquad.qna.web.HttpSessionUtils;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.servlet.http.HttpSession;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +28,10 @@ public class Posts extends BaseTimeEntity {
   private String content;
 
   @Builder
-  public Posts(String author, String title, String content) {
-    this.author = author;
+  public Posts(String title, String content, HttpSession httpSession) {
+    Users sessionUser = HttpSessionUtils.getUserFromSession(httpSession);
+    assert sessionUser != null;
+    this.author = sessionUser.getUserId();
     this.title = title;
     this.content = content;
   }

@@ -23,6 +23,8 @@ public class IndexController {
   private final UsersService usersService;
   private final UsersRepository usersRepository;
 
+  //posts
+
   @GetMapping("/")
   public String index(Model model) {
     model.addAttribute("posts", postsService.findAllDesc());
@@ -35,11 +37,22 @@ public class IndexController {
     return "index";
   }
 
-  //"/users/logout" 로그아웃 기능 만들어야 함
-  //"/users/update" 개인정보 수정 기능 만들어야 함
   @GetMapping("/posts/save")
-  public String postsSave() {
+  public String postsSave(Model model, HttpSession httpSession) {
+    if (!HttpSessionUtils.isLoggedIn(httpSession)) {
+      return "redirect:/users/login";
+    }
     return "posts-save";
+  }
+
+  @GetMapping("/posts/update/{Id}")
+  public String postsUpdate(@PathVariable Long Id, Model model, HttpSession httpSession) {
+    if (!HttpSessionUtils.isLoggedIn(httpSession)) {
+      return "redirect:/users/login";
+    }
+    PostsResponseDto responseDto = postsService.findById(Id);
+    model.addAttribute("posts", responseDto);
+    return "posts-update";
   }
 
   @GetMapping("/users/login")
@@ -64,6 +77,8 @@ public class IndexController {
     return "redirect:/";
   }
 
+  //users
+
   @GetMapping("/users/show")
   public String usersShow(Model model) {
     model.addAttribute("users", usersService.findAllDesc());
@@ -82,13 +97,6 @@ public class IndexController {
     UsersResponseDto responseDto = usersService.findById(Id);
     model.addAttribute("user", responseDto);
     return "users-update";
-  }
-
-  @GetMapping("/posts/update/{Id}")
-  public String postsUpdate(@PathVariable Long Id, Model model) {
-    PostsResponseDto responseDto = postsService.findById(Id);
-    model.addAttribute("posts", responseDto);
-    return "posts-update";
   }
 
   @PostMapping("/login") //@RestController에서 하면 리다이렉트가 안된다고 한다. 왜인지는 모르겠다.

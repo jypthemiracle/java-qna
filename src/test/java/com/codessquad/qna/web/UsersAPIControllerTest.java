@@ -1,16 +1,25 @@
 package com.codessquad.qna.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.codessquad.qna.controller.PostsRepository;
+import com.codessquad.qna.controller.UsersAPIController;
 import com.codessquad.qna.controller.UsersRepository;
 import com.codessquad.qna.domain.Posts;
 import com.codessquad.qna.domain.Users;
 import com.codessquad.qna.web.dto.UsersUpdateRequestDto;
 import java.util.List;
+import javax.servlet.http.HttpSession;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -80,7 +89,7 @@ public class UsersAPIControllerTest {
 
   @Test
   public void Users가_수정된다() {
-    Long thisId = (long) 1;
+    long thisId = 1;
     //given
     Users testUser = usersRepository.save(Users.builder()
         .userId("jypthemiracle")
@@ -104,7 +113,8 @@ public class UsersAPIControllerTest {
 
     String url = "http://localhost:" + port + "/api/v1/users" + thisId;
     HttpEntity<UsersUpdateRequestDto> requestEntity = new HttpEntity<>(requestDto);
-    ResponseEntity<Long> responseEntity = testRestTemplate.exchange(url, HttpMethod.PUT, requestEntity, Long.class);
+    ResponseEntity<Long> responseEntity = testRestTemplate
+        .exchange(url, HttpMethod.PUT, requestEntity, Long.class);
 
     assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     List<Users> all = usersRepository.findAllDesc();

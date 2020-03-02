@@ -1,6 +1,7 @@
 package com.codessquad.qna.controller;
 
 import com.codessquad.qna.service.posts.PostsService;
+import com.codessquad.qna.web.HttpSessionUtils;
 import com.codessquad.qna.web.dto.PostsSaveRequestDto;
 import com.codessquad.qna.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
